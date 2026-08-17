@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buddy AI — 移動中の20分を、仕事が終わる時間に。</title>
+<meta name="description" content="あなたを覚えている10人のAI。移動中に指示を出せば、オフィスに着く頃には下ごしらえが済んでいます。iOSアプリ Buddy AI。">
+<meta property="og:title" content="Buddy AI — 移動中の20分を、仕事が終わる時間に。">
+<meta property="og:description" content="あなたを覚えている10人のAI。iOSアプリ Buddy AI。">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@500;600&family=Noto+Sans+JP:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#040D1C;
+  --ink-2:#0B1830;
+  --paper:#F2F1F6;
+  --paper-2:#E4E3EC;
+  --gold:#C4A24C;
+  --gold-dim:#8A7233;
+  --sky:#7ABEE8;
+  --sky-2:#4E90C4;
+  --line:rgba(255,255,255,.13);
+  --line-d:rgba(4,13,28,.13);
+  --mincho:"Shippori Mincho B1",serif;
+  --sans:"Noto Sans JP",system-ui,sans-serif;
+  --mono:"Roboto Mono",monospace;
+  --wrap:1080px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.9;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--sky);outline-offset:3px}
+.wrap{width:100%;max-width:var(--wrap);margin:0 auto;padding:0 24px}
+.dark{background:var(--ink);color:var(--paper)}
+
+.nav{position:sticky;top:0;z-index:50;background:rgba(4,13,28,.93);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:500;letter-spacing:.05em;color:var(--paper);text-decoration:none;font-size:15px}
+.brand .mark{width:26px;height:26px;border-radius:7px;background:linear-gradient(160deg,#7ABEE8,#65A8D5);position:relative;flex:none}
+.brand .mark::after{content:"";position:absolute;inset:6px 8px 7px 6px;background:#fff;border-radius:50%}
+.navlinks{display:flex;gap:30px;font-size:13.5px;color:rgba(242,241,246,.7)}
+.navlinks a{text-decoration:none;transition:.15s}
+.navlinks a:hover{color:var(--paper)}
+@media(max-width:760px){.navlinks{display:none}}
+
+.hero{padding:88px 0 0;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;width:700px;height:700px;right:-200px;top:-240px;border-radius:50%;background:radial-gradient(circle,rgba(122,190,232,.14),transparent 65%);pointer-events:none}
+.hero .wrap{position:relative;display:grid;grid-template-columns:1.06fr .94fr;gap:40px;align-items:end}
+.hero-copy{padding-bottom:96px}
+.eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;color:var(--gold);margin-bottom:28px}
+h1{font-family:var(--mincho);font-weight:500;font-size:clamp(33px,5.2vw,56px);line-height:1.44;letter-spacing:.005em}
+h1 em{font-style:normal;color:var(--sky)}
+.lede{margin-top:30px;font-size:15.5px;color:rgba(242,241,246,.75);max-width:33em}
+.cta-row{margin-top:38px;display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:14px 28px;border-radius:10px;font-size:15px;font-weight:500;text-decoration:none;border:1px solid transparent;transition:.18s}
+.btn-p{background:var(--paper);color:var(--ink)}
+.btn-s{background:transparent;color:var(--paper);border-color:var(--line)}
+.btn-s:hover{border-color:rgba(255,255,255,.35);background:rgba(255,255,255,.05)}
+.btn-p:hover{background:#fff}
+.status{font-family:var(--mono);font-size:11.5px;color:var(--gold);letter-spacing:.08em}
+.hero-fig{align-self:end;margin-bottom:-1px}
+.hero-fig img{width:100%;mask-image:linear-gradient(to bottom,#000 78%,transparent);-webkit-mask-image:linear-gradient(to bottom,#000 78%,transparent)}
+@media(max-width:880px){
+  .hero{padding-top:64px}
+  .hero .wrap{grid-template-columns:1fr;gap:0}
+  .hero-copy{padding-bottom:40px}
+  .hero-fig{max-width:340px;margin:0 auto}
+}
+
+section{padding:104px 0}
+.sec-head{margin-bottom:60px;max-width:40em}
+.sec-label{font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;color:var(--gold-dim);margin-bottom:18px}
+.dark .sec-label{color:var(--gold)}
+h2{font-family:var(--mincho);font-weight:500;font-size:clamp(25px,3.3vw,35px);line-height:1.58}
+.sec-head p{margin-top:20px;font-size:15px;color:rgba(4,13,28,.65)}
+.dark .sec-head p{color:rgba(242,241,246,.68)}
+
+.scene{border-top:1px solid var(--line-d);padding:54px 0}
+.scene:last-of-type{border-bottom:1px solid var(--line-d)}
+.scene-head{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;margin-bottom:12px}
+.scene-no{font-family:var(--mono);font-size:11.5px;color:var(--gold-dim);letter-spacing:.16em}
+.scene-title{font-family:var(--mincho);font-size:clamp(21px,2.5vw,27px);font-weight:500}
+.scene-sub{font-size:14.5px;color:rgba(4,13,28,.6);margin-bottom:36px;max-width:46em}
+.tl-row{display:grid;grid-template-columns:74px 26px 1fr;gap:18px;align-items:start;padding:13px 0}
+.tl-time{font-family:var(--mono);font-size:13px;color:rgba(4,13,28,.48);padding-top:3px}
+.tl-rail{position:relative;display:flex;justify-content:center}
+.tl-rail::before{content:"";position:absolute;top:0;bottom:-13px;width:1px;background:var(--line-d)}
+.tl-row:last-child .tl-rail::before{display:none}
+.tl-dot{width:9px;height:9px;border-radius:50%;background:var(--paper);border:1.5px solid rgba(4,13,28,.34);margin-top:9px;position:relative;z-index:1;flex:none}
+.tl-row[data-who="buddy"] .tl-dot{background:var(--sky-2);border-color:var(--sky-2)}
+.tl-who{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;color:rgba(4,13,28,.42);margin-bottom:4px}
+.tl-row[data-who="buddy"] .tl-who{color:var(--sky-2)}
+.tl-text{font-size:15.5px;line-height:1.85}
+.tl-note{margin-top:6px;font-size:13.5px;color:rgba(4,13,28,.56)}
+.scene-out{margin-top:28px;margin-left:118px;padding:17px 22px;border-left:2px solid var(--gold);background:rgba(196,162,76,.08);font-size:14.5px}
+@media(max-width:720px){
+  .tl-row{grid-template-columns:58px 20px 1fr;gap:12px}
+  .tl-time{font-size:12px}
+  .scene-out{margin-left:0}
+}
+
+.mem{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.mem div{background:var(--ink);padding:34px 28px}
+.mem h3{font-family:var(--mincho);font-size:19px;font-weight:500;margin-bottom:14px;color:var(--gold)}
+.mem p{font-size:14px;color:rgba(242,241,246,.72)}
+@media(max-width:760px){.mem{grid-template-columns:1fr}}
+
+.cast{display:grid;grid-template-columns:repeat(5,1fr);gap:26px 18px}
+.cast figure{text-align:center}
+.cast img{border-radius:10px;width:100%;aspect-ratio:1;object-fit:cover}
+.cast figcaption{margin-top:12px;font-size:13.5px;font-weight:500;color:var(--paper)}
+.cast small{display:block;margin-top:3px;font-size:11.5px;color:rgba(242,241,246,.52);font-weight:400;line-height:1.6}
+@media(max-width:880px){.cast{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:520px){.cast{grid-template-columns:repeat(2,1fr);gap:22px 14px}}
+
+.price{border:1px solid var(--line);border-radius:16px;padding:42px;max-width:520px}
+.price .amt{font-family:var(--mincho);font-size:44px;line-height:1.2}
+.price .amt span{font-size:16px;color:rgba(242,241,246,.58);font-family:var(--sans)}
+.price ul{list-style:none;margin:26px 0 0}
+.price li{padding:11px 0 11px 26px;position:relative;font-size:14.5px;border-top:1px solid var(--line);color:rgba(242,241,246,.84)}
+.price li::before{content:"";position:absolute;left:2px;top:20px;width:7px;height:7px;border-radius:50%;background:var(--sky)}
+.free-note{margin-top:24px;font-size:13.5px;color:rgba(242,241,246,.58)}
+
+.faq details{border-bottom:1px solid var(--line-d);padding:22px 0}
+.faq summary{cursor:pointer;font-size:16px;font-weight:500;list-style:none;display:flex;justify-content:space-between;gap:20px;align-items:center}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-family:var(--mono);color:var(--gold-dim);font-size:19px;flex:none}
+.faq details[open] summary::after{content:"−"}
+.faq p{margin-top:14px;font-size:14.5px;color:rgba(4,13,28,.7);max-width:52em}
+
+footer{border-top:1px solid var(--line);padding:50px 0 62px;font-size:13px;color:rgba(242,241,246,.52)}
+.foot-row{display:flex;justify-content:space-between;gap:28px;flex-wrap:wrap}
+.foot-row nav{display:flex;gap:22px;flex-wrap:wrap}
+.foot-row a{text-decoration:none;transition:.15s}
+.foot-row a:hover{color:var(--paper)}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="mark"></span>Buddy AI</a>
+    <nav class="navlinks">
+      <a href="#scenes">使う場面</a>
+      <a href="#memory">覚えていること</a>
+      <a href="#cast">10人</a>
+      <a href="#price">料金</a>
+      <a href="#faq">よくある質問</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<div class="dark">
+  <div class="hero">
+    <div class="wrap">
+      <div class="hero-copy">
+        <p class="eyebrow">iOS APP — BUDDY AI</p>
+        <h1>移動中の20分を、<br><em>仕事が終わる時間</em>に。</h1>
+        <p class="lede">客先へ向かう電車の中で指示を出す。オフィスに着く頃には、下ごしらえが済んでいる。あなたの仕事を知っている10人のAIが、待たずに動きます。</p>
+        <div class="cta-row">
+          <a class="btn btn-p" href="https://apps.apple.com/app/buddy-ai-navigator/id6777280305">App Store で見る</a>
+          <a class="btn btn-s" href="#scenes">使う場面を見る</a>
+        </div>
+      </div>
+      <figure class="hero-fig">
+        <img src="assets/hero_smith.jpg" alt="Mr. スミス。礼をする執事の姿。" width="880" height="1320">
+      </figure>
+    </div>
+  </div>
+</div>
+
+<section id="scenes">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="sec-label">使う場面</p>
+      <h2>何ができるか、ではなく<br>いつ助かるか。</h2>
+      <p>機能を並べるより、実際の場面のほうが早いと思います。三つ挙げます。</p>
+    </div>
+
+    <article class="scene">
+      <div class="scene-head"><span class="scene-no">場面 01</span><h3 class="scene-title">移動中に、資料を頼まれた</h3></div>
+      <p class="scene-sub">戻ってから着手すると間に合わない。でも今は電車の中で、PCは開けない。</p>
+      <div>
+        <div class="tl-row"><span class="tl-time">18:42</span><span class="tl-rail"><span class="tl-dot"></span></span><div><p class="tl-who">あなた</p><p class="tl-text">客先から電話。「明日の朝までに比較資料がほしい」</p></div></div>
+        <div class="tl-row"><span class="tl-time">18:44</span><span class="tl-rail"><span class="tl-dot"></span></span><div><p class="tl-who">あなた</p><p class="tl-text">Buddy AI に話しかける。「A社とB社の直近の動向を調べて、比較の下書きを作って」</p></div></div>
+        <div class="tl-row" data-who="buddy"><span class="tl-time">18:44</span><span class="tl-rail"><span class="tl-dot"></span></span><div><p class="tl-who">BUDDY AI</p><p class="tl-text">情報を集め、要点を整理しはじめる</p><p class="tl-note">あなたの業界と立場を知っているので、何が重要かの判断込みで。</p></div></div>
+        <div class="tl-row" data-who="buddy"><span class="tl-time">19:05</span><span class="tl-rail"><span class="tl-dot"></span></span><div><p class="tl-who">BUDDY AI</p><p class="tl-text">下書きが手元のスマホに届く</p></div></div>
+        <div class="tl-row"><span class="tl-time">19:20</span><span class="tl-rail"><span class="tl-dot"></span></span><div><p class="tl-who">あなた</p><p class="tl-text">オフィスのPCで最終確認。手を入れて送信</p></div></div>
+      </div>
+      <p class="scene-out">移動していた38分が、下ごしらえの時間に変わりました。判断と仕上げは、これまで通りあなたの仕事です。</p>
+    </article>
+
+    <article class="scene">
+      <div class="scene-head"><span class="scene-no">場面 02</span><h3 class="scene-title">その広告、本物か迷った</h3></div>
+      <p class="scene-sub">うますぎる話に見える。でも本物かもしれない。誰かに聞くほどでもない。</p>
+      <div>
+        <div class="tl-row"><span class="tl-time">07:15</span><span class="tl-rail"><span class="tl-dot"></span></span><div><p class="tl-who">あなた</p><p class="tl-text">SNSで気になる広告を見かける</p></div></div>
+        <div class="tl-row"><span class="tl-time">07:15</span><span class="tl-rail"><span class="tl-dot"></span></span><div><p class="tl-who">あなた</p><p class="tl-text">スクリーンショットを撮って、Buddy AI に渡すだけ</p></div></div>
+        <div class="tl-row" data-who="buddy"><span class="tl-time">07:16</span><span class="tl-rail"><span class="tl-dot"></span></span><div><p class="tl-who">BUDDY AI</p><p class="tl-text">文面と体裁から、注意すべき点を挙げる</p><p class="tl-note">断定はしません。判断の材料をお出しします。</p></div></div>
+        <div class="tl-row"><span class="tl-time">07:17</span><span class="tl-rail"><span class="tl-dot"></span></span><div><p class="tl-who">あなた</p><p class="tl-text">読んで、やめておくことにした</p></div></div>
+      </div>
+      <p class="scene-out">2分で判断材料が揃いました。うまい話ほど、立ち止まる時間が要ります。</p>
+    </article>
+
+    <article class="scene">
+      <div class="scene-head"><span class="scene-no">場面 03</span><h3 class="scene-title">情報収集が、後回しになっていた</h3></div>
+      <p class="scene-sub">読むべきものは分かっている。時間が取れないだけ。</p>
+      <div>
+        <div class="tl-row"><span class="tl-time">12:30</span><span class="tl-rail"><span class="tl-dot"></span></span><div><p class="tl-who">あなた</p><p class="tl-text">昼休み。「今週の業界の動きを拾っておいて」</p></div></div>
+        <div class="tl-row" data-who="buddy"><span class="tl-time">12:31</span><span class="tl-rail"><span class="tl-dot"></span></span><div><p class="tl-who">BUDDY AI</p><p class="tl-text">あなたが関わる領域に絞って集める</p><p class="tl-note">同じニュースでも、あなたの立場から見た意味を添えて。</p></div></div>
+        <div class="tl-row"><span class="tl-time">12:48</span><span class="tl-rail"><span class="tl-dot"></span></span><div><p class="tl-who">あなた</p><p class="tl-text">コーヒーを飲みながら目を通す</p></div></div>
+      </div>
+      <p class="scene-out">一般的なまとめではありません。あなたの仕事から見て意味のあるものだけが残ります。</p>
+    </article>
+  </div>
+</section>
+
+<div class="dark">
+  <section id="memory">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="sec-label">覚えていること</p>
+        <h2>毎回、説明しなくていい。</h2>
+        <p>多くのAIは、話しはじめるたびにあなたを知りません。Buddy AI は三つの層であなたを覚えています。</p>
+      </div>
+      <div class="mem">
+        <div><h3>あなた自身</h3><p>名前、職業、立場、話し方の好み。一度伝えれば、次から前提になります。</p></div>
+        <div><h3>やりとりの記憶</h3><p>先週頼んだこと、そのとき断ったこと。文脈が積み上がります。</p></div>
+        <div><h3>仕事の知識</h3><p>あなたの業界で当たり前のこと。説明の手間が減っていきます。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="cast">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="sec-label">10人</p>
+        <h2>頼み先を、選べます。</h2>
+        <p>同じ依頼でも、返ってくる言葉が違います。仕事の種類と、その日の気分で選んでください。</p>
+      </div>
+      <div class="cast">
+        <figure><img src="assets/smith.jpg" alt="Mr. スミス" loading="lazy"><figcaption>Mr. スミス<small>執事。慇懃で、隙がない</small></figcaption></figure>
+        <figure><img src="assets/aria.jpg" alt="Ms. アリア" loading="lazy"><figcaption>Ms. アリア<small>秘書。的確で、無駄がない</small></figcaption></figure>
+        <figure><img src="assets/sakura.jpg" alt="Sakura" loading="lazy"><figcaption>Sakura<small>江戸っ子。回りくどいのが嫌い</small></figcaption></figure>
+        <figure><img src="assets/ray.jpg" alt="Ray" loading="lazy"><figcaption>Ray<small>明るく、前を向かせる</small></figcaption></figure>
+        <figure><img src="assets/kai.jpg" alt="Kai" loading="lazy"><figcaption>Kai<small>自信家。直球しか投げない</small></figcaption></figure>
+        <figure><img src="assets/merlin.jpg" alt="Merlin" loading="lazy"><figcaption>Merlin<small>賢者。深いところから答える</small></figcaption></figure>
+        <figure><img src="assets/robot.jpg" alt="R-01" loading="lazy"><figcaption>R-01<small>正確に、淡々と</small></figcaption></figure>
+        <figure><img src="assets/haru.jpg" alt="Haru" loading="lazy"><figcaption>Haru<small>素朴に問い返してくる</small></figcaption></figure>
+        <figure><img src="assets/cat.jpg" alt="Cat" loading="lazy"><figcaption>Cat<small>気まぐれ。肩の力が抜ける</small></figcaption></figure>
+        <figure><img src="assets/cogi.jpg" alt="Cogi" loading="lazy"><figcaption>Cogi<small>元気。とにかく味方でいる</small></figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="price">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="sec-label">料金</p>
+        <h2>まず無料で、試してください。</h2>
+      </div>
+      <div class="price">
+        <p class="amt">¥980<span> / 月</span></p>
+        <ul>
+          <li>会話・翻訳・リサーチの1日の回数制限がなくなります</li>
+          <li>10人すべてを使えます</li>
+          <li>最初の1か月は無料</li>
+        </ul>
+        <p class="free-note">無料のままでも、毎日決まった回数はお使いいただけます。<br>解約はiPhoneの設定からいつでも。</p>
+        <div class="cta-row" style="margin-top:32px">
+          <a class="btn btn-p" href="https://apps.apple.com/app/buddy-ai-navigator/id6777280305">App Store で見る</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<section id="faq" class="faq">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="sec-label">よくある質問</p>
+      <h2>先に答えておきます。</h2>
+    </div>
+    <details><summary>AIを使ったことがなくても大丈夫ですか</summary><p>話しかけるだけです。専門の言葉は要りません。うまく伝わらなければ、聞き返してくれます。</p></details>
+    <details><summary>会話の内容はどう扱われますか</summary><p>［プライバシーポリシーの要点をここに。保存先、削除依頼の方法など］</p></details>
+    <details><summary>詐欺かどうか、確実に判定できますか</summary><p>できません。判断の材料をお出しするところまでです。最後に決めるのはご自身でお願いします。</p></details>
+    <details><summary>Android版はありますか</summary><p>いまはiPhoneのみです。［今後の方針をここに］</p></details>
+    <details><summary>解約したいときは</summary><p>iPhoneの「設定」→ Apple ID → サブスクリプションから、いつでも解約できます。アプリ内での操作は不要です。</p></details>
+  </div>
+</section>
+
+<div class="dark">
+  <footer>
+    <div class="wrap foot-row">
+      <div>
+        <p style="color:var(--paper);font-weight:500;margin-bottom:8px">Buddy AI</p>
+        <p>開発 — NOBUHIRO KAWACHI</p>
+      </div>
+      <nav>
+        <a href="https://codebluetokyo-commits.github.io/terms-of-service/">利用規約</a>
+        <a href="https://codebluetokyo-commits.github.io/privacy-policy/">プライバシーポリシー</a>
+        <a href="https://codebluetokyo-commits.github.io/Support/">サポート</a>
+      </nav>
+    </div>
+  </footer>
+</div>
+
+</main>
+</body>
+</html>
