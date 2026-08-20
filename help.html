@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>使い方 — Buddy AI</title>
+<meta name="description" content="Buddy AIの基本操作と、やりたいことから引ける使い方ガイド。タップ・長押し・スワイプの3つを覚えれば、10人のAIを使いこなせます。">
+<meta property="og:title" content="使い方 — Buddy AI">
+<meta property="og:description" content="タップ・長押し・スワイプ。3つの操作を覚えるだけ。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://codebluetokyo-commits.github.io/buddyai/help.html">
+<meta property="og:image" content="https://codebluetokyo-commits.github.io/buddyai/assets/og_card.png">
+<meta property="og:site_name" content="Buddy AI">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@500;600&family=Noto+Sans+JP:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#040D1C; --ink-2:#0B1830; --paper:#F2F1F6; --paper-2:#E4E3EC;
+  --gold:#C4A24C; --gold-dim:#8A7233; --sky:#7ABEE8; --sky-2:#4E90C4;
+  --line:rgba(255,255,255,.13); --line-d:rgba(4,13,28,.13);
+  --mincho:"Shippori Mincho B1",serif;
+  --sans:"Noto Sans JP",system-ui,sans-serif;
+  --mono:"Roboto Mono",monospace;
+  --wrap:1080px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.9;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--sky);outline-offset:3px}
+.wrap{width:100%;max-width:var(--wrap);margin:0 auto;padding:0 24px}
+.dark{background:var(--ink);color:var(--paper)}
+
+.nav{position:sticky;top:0;z-index:50;background:rgba(4,13,28,.93);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;color:var(--paper);text-decoration:none;letter-spacing:.02em}
+.brand .mark{position:relative;width:26px;height:26px;border-radius:7px;background:linear-gradient(150deg,var(--sky),var(--sky-2))}
+.brand .mark::after{content:"";position:absolute;inset:6px 8px 7px 6px;background:#fff;border-radius:50%}
+.navlinks{display:flex;gap:32px;font-size:15px;color:rgba(242,241,246,.82)}
+.navlinks a{text-decoration:none;transition:.15s}
+.navlinks a:hover{color:var(--paper)}
+@media(max-width:760px){.navlinks{display:none}}
+
+.head{background:var(--ink);color:var(--paper);padding:88px 0 72px;position:relative;overflow:hidden}
+.head::before{content:"";position:absolute;width:640px;height:640px;right:-180px;top:-220px;border-radius:50%;background:radial-gradient(circle,rgba(122,190,232,.13),transparent 65%);pointer-events:none}
+.eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;color:var(--gold);margin-bottom:24px}
+.head h1{font-family:var(--mincho);font-weight:500;font-size:clamp(30px,4.6vw,46px);line-height:1.45;position:relative}
+.head h1 em{font-style:normal;color:var(--sky)}
+.head .lede{margin-top:26px;font-size:15.5px;color:rgba(242,241,246,.75);max-width:34em;position:relative}
+
+.toc{margin-top:40px;display:flex;flex-wrap:wrap;gap:10px;position:relative}
+.toc a{font-size:13.5px;text-decoration:none;color:rgba(242,241,246,.8);border:1px solid var(--line);border-radius:999px;padding:8px 16px;transition:.18s}
+.toc a:hover{border-color:rgba(255,255,255,.35);background:rgba(255,255,255,.05);color:var(--paper)}
+
+section{padding:88px 0}
+.sec-label{font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;color:var(--gold-dim);margin-bottom:16px}
+h2{font-family:var(--mincho);font-weight:500;font-size:clamp(24px,3.1vw,33px);line-height:1.55;margin-bottom:14px}
+.sec-note{font-size:15px;color:rgba(4,13,28,.62);max-width:36em;margin-bottom:52px}
+
+.basics{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+@media(max-width:860px){.basics{grid-template-columns:1fr;gap:44px}}
+.basic{background:#fff;border:1px solid var(--line-d);border-radius:16px;padding:30px 26px 32px}
+.basic .fig{display:flex;justify-content:center;margin-bottom:24px}
+.basic h3{font-family:var(--mincho);font-weight:600;font-size:19px;margin-bottom:6px}
+.basic .how{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--gold-dim);margin-bottom:14px}
+.basic p{font-size:14.5px;color:rgba(4,13,28,.72)}
+
+.qa{border-top:1px solid var(--line-d)}
+.qa-item{border-bottom:1px solid var(--line-d);padding:26px 0;display:grid;grid-template-columns:minmax(0,15em) 1fr;gap:32px;align-items:start}
+@media(max-width:760px){.qa-item{grid-template-columns:1fr;gap:10px}}
+.qa-q{font-family:var(--mincho);font-weight:600;font-size:17.5px;line-height:1.6}
+.qa-a{font-size:14.5px;color:rgba(4,13,28,.75)}
+.qa-a b{font-weight:700;color:var(--ink)}
+.step{font-family:var(--mono);font-size:12px;color:var(--gold-dim);letter-spacing:.06em;display:block;margin-top:10px}
+.dark .step{color:var(--gold)}
+
+.menu-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0 44px}
+@media(max-width:760px){.menu-grid{grid-template-columns:1fr}}
+.menu-row{display:flex;gap:16px;padding:18px 0;border-bottom:1px solid var(--line-d);align-items:baseline}
+.menu-icon{font-size:20px;line-height:1;flex:0 0 auto}
+.menu-name{font-weight:700;font-size:15px;flex:0 0 5.5em}
+.menu-desc{font-size:14px;color:rgba(4,13,28,.7)}
+
+.tip{background:var(--ink-2);color:var(--paper);border-radius:16px;padding:30px 32px;margin-top:52px}
+.tip h3{font-family:var(--mincho);font-weight:600;font-size:18px;margin-bottom:10px;color:var(--sky)}
+.tip p{font-size:14.5px;color:rgba(242,241,246,.8)}
+
+.cta{text-align:center;padding:80px 0 96px}
+.cta h2{margin-bottom:22px}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:14px 28px;border-radius:10px;font-size:15px;font-weight:500;text-decoration:none;border:1px solid transparent;transition:.18s}
+.btn-p{background:var(--ink);color:var(--paper)}
+.btn-p:hover{background:#0B1830}
+
+footer{padding:56px 0 64px;font-size:13.5px;color:rgba(242,241,246,.6)}
+.foot-row{display:flex;justify-content:space-between;gap:32px;flex-wrap:wrap}
+footer nav{display:flex;gap:24px;flex-wrap:wrap}
+footer a{text-decoration:none;transition:.15s}
+footer a:hover{color:var(--paper)}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="./"><span class="mark"></span>Buddy AI</a>
+    <nav class="navlinks">
+      <a href="./#scenes">使う場面</a>
+      <a href="./#memory">覚えていること</a>
+      <a href="./#cast">10人</a>
+      <a href="./#price">料金</a>
+      <a href="./#faq">よくある質問</a>
+    </nav>
+  </div>
+</header>
+
+<div class="head">
+  <div class="wrap">
+    <div class="eyebrow">HOW TO USE</div>
+    <h1>覚えることは、<em>三つ</em>だけ。</h1>
+    <p class="lede">Buddy AI にはたくさんの機能がありますが、入口はどれも同じ場所にあります。タップ、長押し、スワイプ。この三つを知っていれば、あとは話しかけるだけです。</p>
+    <div class="toc">
+      <a href="#basics">三つの基本操作</a>
+      <a href="#howto">やりたいことから探す</a>
+      <a href="#memory">覚えること、先を読むこと</a>
+      <a href="#menu">メニュー8つの使い分け</a>
+      <a href="#stuck">困ったときは</a>
+    </div>
+  </div>
+</div>
+
+<section id="basics">
+  <div class="wrap">
+    <div class="sec-label">BASICS</div>
+    <h2>三つの基本操作</h2>
+    <p class="sec-note">画面の中央にいるキャラクターが、すべての入口です。触り方によって、開くものが変わります。</p>
+
+    <div class="basics">
+
+      <div class="basic">
+        <div class="fig">
+          <svg viewBox="0 0 120 180" width="108" height="162" aria-hidden="true">
+            <rect x="8" y="4" width="104" height="172" rx="16" fill="#0B1830" stroke="#C4A24C" stroke-width="1.2" opacity=".9"/>
+            <circle cx="60" cy="78" r="26" fill="none" stroke="#7ABEE8" stroke-width="1.4" opacity=".55"/>
+            <circle cx="60" cy="78" r="9" fill="#7ABEE8" opacity=".9"/>
+            <circle cx="60" cy="78" r="18" fill="none" stroke="#7ABEE8" stroke-width="1" opacity=".3"/>
+            <circle cx="60" cy="78" r="34" fill="none" stroke="#7ABEE8" stroke-width=".8" opacity=".18"/>
+            <circle cx="30" cy="52" r="5" fill="none" stroke="#C4A24C" stroke-width="1"/>
+            <circle cx="90" cy="52" r="5" fill="none" stroke="#C4A24C" stroke-width="1"/>
+            <circle cx="24" cy="86" r="5" fill="none" stroke="#C4A24C" stroke-width="1"/>
+            <circle cx="96" cy="86" r="5" fill="none" stroke="#C4A24C" stroke-width="1"/>
+            <circle cx="38" cy="112" r="5" fill="none" stroke="#C4A24C" stroke-width="1"/>
+            <circle cx="82" cy="112" r="5" fill="none" stroke="#C4A24C" stroke-width="1"/>
+          </svg>
+        </div>
+        <h3>話しかける</h3>
+        <div class="how">TAP（タップ）— 一回さわる</div>
+        <p>キャラクターを軽くタップすると、まわりに八つのメニューが円を描いて開きます。声で話すのも、文字で打つのも、ここから。</p>
+      </div>
+
+      <div class="basic">
+        <div class="fig">
+          <svg viewBox="0 0 120 180" width="108" height="162" aria-hidden="true">
+            <rect x="8" y="4" width="104" height="172" rx="16" fill="#0B1830" stroke="#C4A24C" stroke-width="1.2" opacity=".9"/>
+            <circle cx="60" cy="82" r="22" fill="#7ABEE8" opacity=".16"/>
+            <circle cx="60" cy="82" r="11" fill="#7ABEE8" opacity=".95"/>
+            <circle cx="60" cy="82" r="30" fill="none" stroke="#7ABEE8" stroke-width="1.2" opacity=".35"/>
+            <circle cx="60" cy="82" r="38" fill="none" stroke="#7ABEE8" stroke-width=".8" opacity=".16"/>
+            <rect x="38" y="32" width="44" height="15" rx="7.5" fill="none" stroke="#C4A24C" stroke-width="1.2"/>
+            <circle cx="47" cy="39.5" r="3" fill="#C4A24C"/>
+            <text x="60" y="43" font-family="ui-monospace,monospace" font-size="8" fill="#C4A24C" text-anchor="middle" dx="6">REC</text>
+            <path d="M60 126 v16" stroke="#7ABEE8" stroke-width="1.4" opacity=".5" stroke-linecap="round"/>
+            <path d="M52 132 v4 M68 132 v4 M44 130 v8 M76 130 v8" stroke="#7ABEE8" stroke-width="1.4" opacity=".3" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>声を録る</h3>
+        <div class="how">HOLD（ホールド）— 一秒ほど押さえたまま</div>
+        <p>そのまま押し続けると録音が始まります。会議でも、歩きながらの思いつきでも。止めたあとに、メモ・議事録・テキスト・Word から選べます。</p>
+      </div>
+
+      <div class="basic">
+        <div class="fig">
+          <svg viewBox="0 0 120 180" width="108" height="162" aria-hidden="true">
+            <rect x="8" y="4" width="104" height="172" rx="16" fill="#0B1830" stroke="#C4A24C" stroke-width="1.2" opacity=".9"/>
+            <circle cx="60" cy="72" r="16" fill="#7ABEE8" opacity=".22"/>
+            <rect x="16" y="132" width="88" height="30" rx="9" fill="#7ABEE8" opacity=".14" stroke="#7ABEE8" stroke-width="1" stroke-opacity=".4"/>
+            <circle cx="34" cy="147" r="4" fill="#C4A24C" opacity=".8"/>
+            <circle cx="60" cy="147" r="4" fill="#C4A24C" opacity=".8"/>
+            <circle cx="86" cy="147" r="4" fill="#C4A24C" opacity=".8"/>
+            <path d="M30 168 h60" stroke="#7ABEE8" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M38 162 l-7 6 l7 6" fill="none" stroke="#7ABEE8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M82 162 l7 6 l-7 6" fill="none" stroke="#7ABEE8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3>画面を移る</h3>
+        <div class="how">SWIPE（スワイプ）— 下のふちを横になぞる</div>
+        <p>画面のいちばん下を横になぞると、下部メニューが出ます。右から左でも、左から右でも構いません。保存したものを見返すのはここから。三秒で自然に消えます。</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="dark">
+<section id="howto">
+  <div class="wrap">
+    <div class="sec-label" style="color:var(--gold)">INDEX</div>
+    <h2>やりたいことから探す</h2>
+    <p class="sec-note" style="color:rgba(242,241,246,.8)">機能の名前ではなく、その時したいことから引けるようにしました。</p>
+
+    <div class="qa" style="border-color:var(--line)">
+
+      <div class="qa-item" style="border-color:var(--line)">
+        <div class="qa-q" style="color:var(--paper)">会議の記録を残したい</div>
+        <div class="qa-a" style="color:rgba(242,241,246,.96)">キャラクターを<b style="color:var(--sky)">長押し</b>すると録音が始まります。音声の案内が流れ、画面に ● REC と出れば録音中。参加者の名前を先に伝えておくと、誰の発言かを聞き分けます。終わったらもう一度タップして停止。
+        <span class="step">長押し → 話す → タップで停止 → 「議事録としてまとめる」</span></div>
+      </div>
+
+      <div class="qa-item" style="border-color:var(--line)">
+        <div class="qa-q" style="color:var(--paper)">思いついたことを声で残したい</div>
+        <div class="qa-a" style="color:rgba(242,241,246,.96)">同じく<b style="color:var(--sky)">長押し</b>から。止めたあとに「録音メモとして保存」を選べば、文字起こしがそのまま残ります。要約はいらない、生の言葉のままがいい、というときに。
+        <span class="step">長押し → タップで停止 → 「録音メモとして保存」</span></div>
+      </div>
+
+      <div class="qa-item" style="border-color:var(--line)">
+        <div class="qa-q" style="color:var(--paper)">保存したものを見返したい</div>
+        <div class="qa-a" style="color:rgba(242,241,246,.96)">画面のいちばん下を<b style="color:var(--sky)">横になぞる</b>と、下部メニューが現れます。右から左でも、左から右でも構いません。「保存済み」に議事録・レポート・録音メモ・出力ファイルがまとまっています。三秒で消えるので、出たら続けて押してください。
+        <span class="step">下のふちを横になぞる → 保存済み</span></div>
+      </div>
+
+      <div class="qa-item" style="border-color:var(--line)">
+        <div class="qa-q" style="color:var(--paper)">聞き流した話を、あとで読み直したい</div>
+        <div class="qa-a" style="color:rgba(242,241,246,.96)">移動中は耳で聞くだけで十分でも、机に戻ってから確かめたくなることがあります。メニューの<b style="color:var(--sky)">📋ご報告</b>に、これまでの返答が残っています。声で受け取ったものを、目で追い直すための場所です。ホーム画面の返答の下に出る「ご報告で全文を読む」からも、そのまま開けます。
+        <span class="step">タップ → 📋ご報告　／　返答の下の「全文を読む」</span></div>
+      </div>
+
+      <div class="qa-item" style="border-color:var(--line)">
+        <div class="qa-q" style="color:var(--paper)">予定やリマインダーを入れたい</div>
+        <div class="qa-a" style="color:rgba(242,241,246,.96)">話しかけるだけで登録されます。「明日14時に歯医者」「来週の月曜に請求書を出すこと」。日時が曖昧でも文脈から補います。専用の画面が要るときは、メニューの📅予定から。
+        <span class="step">タップ → 🎤話す →「明日14時に歯医者の予約を登録して」</span></div>
+      </div>
+
+      <div class="qa-item" style="border-color:var(--line)">
+        <div class="qa-q" style="color:var(--paper)">調べ物をしたい</div>
+        <div class="qa-a" style="color:rgba(242,241,246,.96)">そのまま聞いてください。最新の情報が要る質問だと判断すれば、自分で調べに行きます。移動中に聞くことを想定して、答えは短くまとめます。じっくり読みたいときは🔍調べるから。詳しい報告が返ります。
+        <span class="step">タップ → 🎤話す、または 🔍調べる</span></div>
+      </div>
+
+      <div class="qa-item" style="border-color:var(--line)">
+        <div class="qa-q" style="color:var(--paper)">相手に言葉を伝えたい</div>
+        <div class="qa-a" style="color:rgba(242,241,246,.96)">メニューの🌐翻訳から。訳した文は <b style="color:var(--sky)">A+</b> で大きくでき、全画面にも広げられます。画面を相手に向けて、そのまま読んでもらうための作りです。声で入れることも、看板やメニューを撮って訳すこともできます。
+        <span class="step">タップ → 🌐翻訳 → 訳す → A+ で大きく → 相手に向ける</span></div>
+      </div>
+
+      <div class="qa-item" style="border-color:var(--line)">
+        <div class="qa-q" style="color:var(--paper)">写真について聞きたい</div>
+        <div class="qa-a" style="color:rgba(242,241,246,.96)">メニューの📷画像から写真を渡せます。書いてある文字を読む、内容を説明する、二枚を見比べる。届いたメッセージの画面を見せて「これ、怪しい？」と聞けば、詐欺の疑いも見ます。
+        <span class="step">タップ → 📷画像</span></div>
+      </div>
+
+      <div class="qa-item" style="border-color:var(--line)">
+        <div class="qa-q" style="color:var(--paper)">相談に乗ってほしい</div>
+        <div class="qa-a" style="color:rgba(242,241,246,.96)">仕事の段取りとは違う話も、ここでできます。決めかねていること、誰にも言っていないこと、うまく言葉にならないこと。話す相手は、いま選んでいる十人のうちの一人です。同じことを聞いても、執事と猫では返ってくる言葉が違います。
+        <span class="step">タップ → 🤝相談</span></div>
+      </div>
+
+      <div class="qa-item" style="border-color:var(--line)">
+        <div class="qa-q" style="color:var(--paper)">相手を変えたい・名前を変えたい</div>
+        <div class="qa-a" style="color:rgba(242,241,246,.96)">右下の歯車から設定を開き、「キャラクターを選ぶ」で十人から。それぞれ口調も声も違います。✏️から名前も変えられるので、好きな呼び名をつけてください。
+        <span class="step">⚙️設定 → キャラクターを選ぶ</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+</div>
+
+<section id="memory">
+  <div class="wrap">
+    <div class="sec-label">MEMORY</div>
+    <h2>覚えることから、<br>先を読むことへ。</h2>
+    <p class="sec-note">Buddy AI が、ただ命令を待つ道具ではないと感じてもらえるとしたら、それはここの働きによるものです。</p>
+
+    <div style="max-width:40em;font-size:15.5px;line-height:2.05;color:rgba(4,13,28,.78)">
+      <p style="margin-bottom:26px">設定の「私のことを覚えてほしい」に、仕事や立場、いま抱えていることを書いておけます。ここに書かれたことは、次の応答から前提になります。毎回説明しなくてよくなる、というのがまず一つ。</p>
+
+      <p style="margin-bottom:26px">それとは別に、会話のなかから自然に覚えていく仕組みも働いています。何度も話題に出ること、繰り返し頼まれること。そうしたものが少しずつ蓄えられ、あなたの文脈として残ります。使うほど、前置きが要らなくなります。</p>
+
+      <p style="margin-bottom:26px">ただ、わたしたちが本当に目指しているのは、その先です。</p>
+
+      <p style="margin-bottom:26px">覚えているだけでは、まだ受け身のままです。頼まれてから動くのではなく、頼まれる前に気づく。この時間なら次はあれだろう、この件ならあの資料が要るだろう、と。人が優れた執事や秘書に感じる頼もしさは、記憶の量ではなく、その先読みの精度から来ています。</p>
+
+      <p style="margin-bottom:26px">そこに届くまでには、まだ時間がかかります。次のバージョンで正面から取り組む予定です。いま覚えていることは、そのための土台でもあります。</p>
+
+      <p style="color:rgba(4,13,28,.55);font-size:14.5px">1987年に Apple が描いた Knowledge Navigator は、画面の向こうの相手が、こちらの文脈を分かっている世界でした。あの映像から四十年近く経ちますが、まだ誰も完全には作っていません。作っている途中です。</p>
+    </div>
+  </div>
+</section>
+
+<section id="menu">
+  <div class="wrap">
+    <div class="sec-label">MENU</div>
+    <h2>メニュー八つの使い分け</h2>
+    <p class="sec-note">タップで開く八つは、性格が二種類に分かれています。前の二つは「どうやって伝えるか」。残りの六つは「専用の画面への近道」です。迷ったら🎤話すで構いません。たいていのことは、言葉で伝われば動きます。</p>
+
+    <div class="menu-grid">
+      <div class="menu-row"><span class="menu-icon">🎤</span><span class="menu-name">話す</span><span class="menu-desc">声で伝える。いちばんの近道</span></div>
+      <div class="menu-row"><span class="menu-icon">⌨️</span><span class="menu-name">テキスト</span><span class="menu-desc">静かな場所や、正確に打ちたいとき</span></div>
+      <div class="menu-row"><span class="menu-icon">📷</span><span class="menu-name">画像</span><span class="menu-desc">写真を見せて聞く</span></div>
+      <div class="menu-row"><span class="menu-icon">📋</span><span class="menu-name">ご報告</span><span class="menu-desc">頼んだ仕事の報告を読み返す</span></div>
+      <div class="menu-row"><span class="menu-icon">🌐</span><span class="menu-name">翻訳</span><span class="menu-desc">訳した文を大きく出して、相手に見せる</span></div>
+      <div class="menu-row"><span class="menu-icon">🔍</span><span class="menu-name">調べる</span><span class="menu-desc">詳しく調べてほしいとき</span></div>
+      <div class="menu-row"><span class="menu-icon">📅</span><span class="menu-name">予定</span><span class="menu-desc">日時を自分で指定して入れる</span></div>
+      <div class="menu-row"><span class="menu-icon">🤝</span><span class="menu-name">相談</span><span class="menu-desc">迷っていること、決めかねていること</span></div>
+    </div>
+
+    <div class="tip">
+      <h3>「話す」と「調べる」の違い</h3>
+      <p>どちらでも調べ物はできます。違うのは、返ってくる長さです。🎤話すは移動中に耳で聞くことを想定して、要点を短くまとめます。🔍調べるは腰を据えて読むための画面なので、詳しい報告が返ります。同じことを聞いても、返り方が変わります。</p>
+    </div>
+  </div>
+</section>
+
+<div class="dark">
+<section id="stuck">
+  <div class="wrap">
+    <div class="sec-label" style="color:var(--gold)">TROUBLE</div>
+    <h2>困ったときは</h2>
+    <p class="sec-note" style="color:rgba(242,241,246,.8)">つまずきやすいところを集めました。</p>
+
+    <div class="qa" style="border-color:var(--line)">
+      <div class="qa-item" style="border-color:var(--line)">
+        <div class="qa-q" style="color:var(--paper)">下のメニューが消えてしまった</div>
+        <div class="qa-a" style="color:rgba(242,241,246,.96)">三秒で自動的に隠れる作りです。もう一度、画面のいちばん下を横になぞってください。出ている間に押せば、そのまま移動できます。</div>
+      </div>
+      <div class="qa-item" style="border-color:var(--line)">
+        <div class="qa-q" style="color:var(--paper)">録音が始まったか分からない</div>
+        <div class="qa-a" style="color:rgba(242,241,246,.96)">始まると音声で案内が流れ、画面の表示が「● REC」に変わります。押す時間が短いとメニューが開くだけなので、一秒ほど押さえたままにしてください。</div>
+      </div>
+      <div class="qa-item" style="border-color:var(--line)">
+        <div class="qa-q" style="color:var(--paper)">前に話したことを覚えていない</div>
+        <div class="qa-a" style="color:rgba(242,241,246,.96)">設定の「私のことを覚えてほしい」に、仕事や状況を書いておけます。会話の中から自然に覚えることもありますが、大事なことは先に伝えておくほうが確実です。</div>
+      </div>
+      <div class="qa-item" style="border-color:var(--line)">
+        <div class="qa-q" style="color:var(--paper)">子どもに触られたくない</div>
+        <div class="qa-a" style="color:rgba(242,241,246,.96)">設定の「画面ロック」を入れると、いたずら操作を防げます。カバンの中での誤動作にも。</div>
+      </div>
+      <div class="qa-item" style="border-color:var(--line)">
+        <div class="qa-q" style="color:var(--paper)">それでも解決しないとき</div>
+        <div class="qa-a" style="color:rgba(242,241,246,.96)">サポートページからご連絡ください。返信までお時間をいただくことがありますが、必ず目を通しています。</div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<section class="cta">
+  <div class="wrap">
+    <h2>まずは、話しかけてみてください。</h2>
+    <a class="btn btn-p" href="https://apps.apple.com/app/buddy-ai-navigator/id6777280305">App Store で見る</a>
+  </div>
+</section>
+
+<div class="dark">
+  <footer>
+    <div class="wrap foot-row">
+      <div>
+        <p style="color:var(--paper);font-weight:500;margin-bottom:8px">Buddy AI</p>
+        <p>開発 — NOBUHIRO KAWACHI</p>
+      </div>
+      <nav>
+        <a href="./">トップ</a>
+        <a href="https://codebluetokyo-commits.github.io/terms-of-service/">利用規約</a>
+        <a href="https://codebluetokyo-commits.github.io/privacy-policy/">プライバシーポリシー</a>
+        <a href="https://codebluetokyo-commits.github.io/Support/">サポート</a>
+      </nav>
+    </div>
+  </footer>
+</div>
+
+</body>
+</html>
