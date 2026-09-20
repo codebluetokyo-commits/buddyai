@@ -1,0 +1,13 @@
+name = "buddyai-contact"
+main = "src/index.js"
+compatibility_date = "2025-09-01"
+
+[observability]
+enabled = true
+
+[vars]
+ALLOWED_ORIGINS = "https://codebluetokyo-commits.github.io"
+
+# シークレットは wrangler secret put で登録する（このファイルには書かないこと）
+#   wrangler secret put TYPESAFE_API_KEY
+#   wrangler secret put NOTIFY_WEBHOOK

@@ -145,6 +145,22 @@ footer{border-top:1px solid var(--line);padding:50px 0 62px;font-size:13px;color
 .foot-row a{text-decoration:none;transition:.15s}
 .foot-row a:hover{color:var(--paper)}
 
+.contact{max-width:560px}
+.contact .field{margin-bottom:22px}
+.contact label{display:block;font-size:13.5px;color:rgba(242,241,246,.72);margin-bottom:9px}
+.contact label .req{color:var(--gold);font-family:var(--mono);font-size:11px;margin-left:6px;letter-spacing:.1em}
+.contact input,.contact textarea{width:100%;font-family:var(--sans);font-size:15px;line-height:1.8;color:var(--paper);background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:10px;padding:13px 15px;transition:.15s}
+.contact input:focus,.contact textarea:focus{outline:none;border-color:var(--sky-2);background:rgba(255,255,255,.07)}
+.contact textarea{resize:vertical;min-height:150px}
+.contact .hint{margin-top:8px;font-size:12.5px;color:rgba(242,241,246,.45)}
+.contact .pot{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.contact button{font-family:var(--sans);cursor:pointer}
+.contact button[disabled]{opacity:.55;cursor:default}
+.contact .msg{margin-top:20px;font-size:14px;padding:14px 18px;border-radius:10px;display:none}
+.contact .msg.show{display:block}
+.contact .msg.ok{background:rgba(122,190,232,.12);border-left:2px solid var(--sky);color:rgba(242,241,246,.9)}
+.contact .msg.ng{background:rgba(196,162,76,.12);border-left:2px solid var(--gold);color:rgba(242,241,246,.9)}
+
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
 </style>
 </head>
@@ -160,6 +176,7 @@ footer{border-top:1px solid var(--line);padding:50px 0 62px;font-size:13px;color
       <a href="#price">料金</a>
       <a href="#faq">よくある質問</a>
       <a href="help.html">使い方</a>
+      <a href="#contact">問い合わせ</a>
     </nav>
   </div>
 </header>
@@ -305,6 +322,41 @@ footer{border-top:1px solid var(--line);padding:50px 0 62px;font-size:13px;color
 </section>
 
 <div class="dark">
+<section id="contact">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="sec-label">お問い合わせ</p>
+      <h2>困っていることを、そのまま書いてください。</h2>
+      <p>内容から急ぎ具合を判断して、順番を決めます。アプリが使えない、課金がおかしい、といったものは当日中にお返事します。</p>
+    </div>
+
+    <form class="contact" id="contact-form" novalidate>
+      <div class="field">
+        <label for="cf-name">お名前</label>
+        <input type="text" id="cf-name" name="name" maxlength="100" autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="cf-email">メールアドレス<span class="req">必須</span></label>
+        <input type="email" id="cf-email" name="email" maxlength="254" autocomplete="email" required>
+        <p class="hint">お返事はこちらにお送りします。</p>
+      </div>
+      <div class="field">
+        <label for="cf-message">お問い合わせ内容<span class="req">必須</span></label>
+        <textarea id="cf-message" name="message" maxlength="4000" required></textarea>
+        <p class="hint">いつ・どの画面で・何が起きたかを書いていただけると、早く解決できます。</p>
+      </div>
+
+      <div class="pot" aria-hidden="true">
+        <label for="cf-website">ここは入力しないでください</label>
+        <input type="text" id="cf-website" name="website" tabindex="-1" autocomplete="off">
+      </div>
+
+      <button type="submit" class="btn btn-p" id="cf-submit">送信する</button>
+      <p class="msg" id="cf-msg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+
   <footer>
     <div class="wrap foot-row">
       <div>
@@ -321,5 +373,69 @@ footer{border-top:1px solid var(--line);padding:50px 0 62px;font-size:13px;color
 </div>
 
 </main>
+
+<script>
+// デプロイした Worker の URL に差し替えてください（worker/README.md を参照）
+var CONTACT_ENDPOINT = "https://buddyai-contact.kenkonworks.workers.dev/api/contact";
+
+(function () {
+  var form = document.getElementById("contact-form");
+  var btn = document.getElementById("cf-submit");
+  var msg = document.getElementById("cf-msg");
+
+  function show(text, kind) {
+    msg.textContent = text;
+    msg.className = "msg show " + kind;
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    var payload = {
+      name: form.name.value,
+      email: form.email.value,
+      message: form.message.value,
+      website: form.website.value
+    };
+
+    if (!payload.email.trim() || !payload.message.trim()) {
+      show("メールアドレスとお問い合わせ内容を入力してください。", "ng");
+      return;
+    }
+    if (CONTACT_ENDPOINT.indexOf("YOUR-SUBDOMAIN") !== -1) {
+      show("送信先が未設定です。サイト管理者にお知らせください。", "ng");
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = "送信中…";
+    msg.className = "msg";
+
+    fetch(CONTACT_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    })
+      .then(function (r) {
+        return r.json().then(function (d) { return { ok: r.ok, d: d }; });
+      })
+      .then(function (res) {
+        if (res.ok && res.d.ok) {
+          form.reset();
+          show("お問い合わせを受け付けました。内容を確認のうえ、ご記入のメールアドレスにお返事します。", "ok");
+        } else {
+          show(res.d.error || "送信できませんでした。時間をおいてお試しください。", "ng");
+        }
+      })
+      .catch(function () {
+        show("送信できませんでした。通信環境をご確認のうえ、もう一度お試しください。", "ng");
+      })
+      .finally(function () {
+        btn.disabled = false;
+        btn.textContent = "送信する";
+      });
+  });
+})();
+</script>
 </body>
 </html>
