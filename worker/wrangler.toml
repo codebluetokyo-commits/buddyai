@@ -8,6 +8,29 @@ enabled = true
 [vars]
 ALLOWED_ORIGINS = "https://codebluetokyo-commits.github.io"
 
+# --- レート制限 ---
+# workers.dev のURLは自分のゾーンではないため、ダッシュボードの WAF / Rate Limiting Rules は使えない。
+# Worker 側の Rate Limiting バインディングで制限する。period は 10 か 60 のみ。
+# カウンタは Cloudflare のロケーションごとに独立している（正確な集計用ではない）。
+
+# 同一IPからの連投を止める。フォームの手入力で 1 分に 3 件を超えることはまずない。
+[[ratelimits]]
+name = "RATE_LIMIT_IP"
+namespace_id = "1001"
+
+  [ratelimits.simple]
+  limit = 3
+  period = 60
+
+# IP を変えて分散してくる場合の全体上限。通知が埋まるのを防ぐための天井。
+[[ratelimits]]
+name = "RATE_LIMIT_GLOBAL"
+namespace_id = "1002"
+
+  [ratelimits.simple]
+  limit = 60
+  period = 60
+
 # シークレットは wrangler secret put で登録する（このファイルには書かないこと）
 #   wrangler secret put TYPESAFE_API_KEY
 #   wrangler secret put NOTIFY_WEBHOOK

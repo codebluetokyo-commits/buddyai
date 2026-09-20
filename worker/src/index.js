@@ -18,6 +18,46 @@ const DEFAULT_ORIGINS = ['https://codebluetokyo-commits.github.io'];
 
 const LIMITS = { name: 100, email: 254, message: 4000, messageMin: 5 };
 
+/**
+ * レート制限のキー。
+ * IPv6 は 1 契約に /64 が割り当てられるため、アドレス全体をキーにすると
+ * 同じ回線からいくらでも別カウンタを作れてしまう。前半 4 グループに丸める。
+ * IPv4 はそのまま使う。
+ */
+export function rateLimitKey(ip) {
+  if (!ip) return 'unknown';
+  if (!ip.includes(':')) return ip;
+
+  // "::" を展開してから先頭 4 グループ（/64）を取る
+  const [head, tail = ''] = ip.split('::');
+  const headParts = head ? head.split(':') : [];
+  const tailParts = tail ? tail.split(':') : [];
+  const fill = ip.includes('::') ? Array(8 - headParts.length - tailParts.length).fill('0') : [];
+  const groups = [...headParts, ...fill, ...tailParts].slice(0, 4);
+  return groups.map((g) => (g || '0').toLowerCase().replace(/^0+(?=.)/, '')).join(':') + '::/64';
+}
+
+/**
+ * レート制限。バインディングが無い環境（未設定や古い wrangler）では素通りさせる。
+ * カウンタは Cloudflare のロケーションごとに独立しているため、厳密な総量規制ではなく
+ * 「連投と通知の氾濫を止める」ことを目的にしている。
+ * @returns {Promise<null | {scope:string, key:string}>} 制限に掛かった場合だけ理由を返す
+ */
+async function checkRateLimit(request, env) {
+  const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+  const key = rateLimitKey(ip);
+
+  if (env.RATE_LIMIT_IP) {
+    const { success } = await env.RATE_LIMIT_IP.limit({ key });
+    if (!success) return { scope: 'ip', key };
+  }
+  if (env.RATE_LIMIT_GLOBAL) {
+    const { success } = await env.RATE_LIMIT_GLOBAL.limit({ key: 'contact' });
+    if (!success) return { scope: 'global', key };
+  }
+  return null;
+}
+
 function corsHeaders(request, env) {
   const allowed = (env.ALLOWED_ORIGINS || DEFAULT_ORIGINS.join(',')).split(',').map((s) => s.trim());
   const origin = request.headers.get('Origin') || '';
@@ -123,6 +163,17 @@ export default {
     const url = new URL(request.url);
     if (url.pathname !== '/api/contact') return json({ error: 'Not found' }, 404, cors);
     if (request.method !== 'POST') return json({ error: 'Method not allowed' }, 405, cors);
+
+    // Jev を呼ぶ前に弾く。本文のパースより前なので、連投のコストはほぼゼロで済む
+    const limited = await checkRateLimit(request, env);
+    if (limited) {
+      console.warn(`[contact] レート制限 (${limited.scope}) key=${limited.key}`);
+      return json(
+        { ok: false, error: '送信が集中しています。しばらく時間をおいてからお試しください。' },
+        429,
+        { ...cors, 'Retry-After': '60' }
+      );
+    }
 
     let body;
     try {
