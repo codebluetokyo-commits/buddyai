@@ -156,6 +156,7 @@ footer{border-top:1px solid var(--line);padding:50px 0 62px;font-size:13px;color
 .contact .pot{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .contact button{font-family:var(--sans);cursor:pointer}
 .contact button[disabled]{opacity:.55;cursor:default}
+.contact .turnstile{margin-bottom:22px;min-height:65px}
 .contact .msg{margin-top:20px;font-size:14px;padding:14px 18px;border-radius:10px;display:none}
 .contact .msg.show{display:block}
 .contact .msg.ok{background:rgba(122,190,232,.12);border-left:2px solid var(--sky);color:rgba(242,241,246,.9)}
@@ -351,6 +352,8 @@ footer{border-top:1px solid var(--line);padding:50px 0 62px;font-size:13px;color
         <input type="text" id="cf-website" name="website" tabindex="-1" autocomplete="off">
       </div>
 
+      <div class="turnstile" id="cf-turnstile"></div>
+
       <button type="submit" class="btn btn-p" id="cf-submit">送信する</button>
       <p class="msg" id="cf-msg" role="status" aria-live="polite"></p>
     </form>
@@ -375,8 +378,24 @@ footer{border-top:1px solid var(--line);padding:50px 0 62px;font-size:13px;color
 </main>
 
 <script>
-// デプロイした Worker の URL に差し替えてください（worker/README.md を参照）
+// デプロイした Worker の URL（worker/README.md を参照）
 var CONTACT_ENDPOINT = "https://buddyai-contact.kenkonworks.workers.dev/api/contact";
+
+// Cloudflare Turnstile のサイトキー。公開値なのでこのまま埋め込んでよい。
+// 対になるシークレットキーは Worker の TURNSTILE_SECRET に登録する。
+var TURNSTILE_SITEKEY = "0x4AAAAAAE9rrmlWw9dtKfaY";
+
+var turnstileWidgetId = null;
+
+// api.js の読み込み完了後に呼ばれる（render=explicit のため）
+function onTurnstileLoad() {
+  if (TURNSTILE_SITEKEY.indexOf("YOUR-") === 0) return;
+  turnstileWidgetId = window.turnstile.render("#cf-turnstile", {
+    sitekey: TURNSTILE_SITEKEY,
+    theme: "dark",
+    language: "ja"
+  });
+}
 
 (function () {
   var form = document.getElementById("contact-form");
@@ -388,22 +407,39 @@ var CONTACT_ENDPOINT = "https://buddyai-contact.kenkonworks.workers.dev/api/cont
     msg.className = "msg show " + kind;
   }
 
+  // トークンは使い捨てなので、送信のたびに作り直す
+  function resetTurnstile() {
+    if (turnstileWidgetId !== null && window.turnstile) {
+      window.turnstile.reset(turnstileWidgetId);
+    }
+  }
+
   form.addEventListener("submit", function (e) {
     e.preventDefault();
+
+    var token = "";
+    if (turnstileWidgetId !== null && window.turnstile) {
+      token = window.turnstile.getResponse(turnstileWidgetId) || "";
+    }
 
     var payload = {
       name: form.name.value,
       email: form.email.value,
       message: form.message.value,
-      website: form.website.value
+      website: form.website.value,
+      turnstileToken: token
     };
 
     if (!payload.email.trim() || !payload.message.trim()) {
       show("メールアドレスとお問い合わせ内容を入力してください。", "ng");
       return;
     }
-    if (CONTACT_ENDPOINT.indexOf("YOUR-SUBDOMAIN") !== -1) {
+    if (CONTACT_ENDPOINT.indexOf("YOUR-") !== -1) {
       show("送信先が未設定です。サイト管理者にお知らせください。", "ng");
+      return;
+    }
+    if (turnstileWidgetId !== null && !token) {
+      show("認証が完了するまでお待ちください。", "ng");
       return;
     }
 
@@ -433,9 +469,11 @@ var CONTACT_ENDPOINT = "https://buddyai-contact.kenkonworks.workers.dev/api/cont
       .finally(function () {
         btn.disabled = false;
         btn.textContent = "送信する";
+        resetTurnstile();
       });
   });
 })();
 </script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoad&render=explicit" async defer></script>
 </body>
 </html>

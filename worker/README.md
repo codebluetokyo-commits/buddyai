@@ -135,6 +135,7 @@ npx wrangler dev --port 8788 --local
 | `src/index.js` | 受付・検証・CORS・通知の送出 |
 | `src/triage.js` | Jev への質問定義と優先度ルール |
 | `src/notify.js` | Slack / Discord / プレーンテキストのペイロード組み立て |
+| `src/turnstile.js` | Turnstile のサーバー側検証 |
 
 ## 設計上の判断
 
@@ -173,5 +174,44 @@ IPv6 を /64 に丸めているのは、1 契約に /64 が割り当てられる
 ブラウザのフォーム送信は接続を使い回すので通常の連投には効くが、接続を張り直す
 スクリプトには緩い。
 
-正確に制限するなら Durable Objects（Workers 有料プランが必要）、bot 自体を止めるなら
-Cloudflare Turnstile（無料、フォームに数行追加）を足すこと。
+正確に制限するなら Durable Objects（Workers 有料プランが必要）を足すこと。
+bot 対策としては後述の Turnstile を併用している。
+
+## Turnstile（bot 対策）
+
+レート制限がエッジサーバー単位でしか効かないため、bot 自体を止める層として併用する。
+接続を張り直しても回避できない。
+
+- サイトキー … 公開値。`index.html` の `TURNSTILE_SITEKEY` に直接書く
+- シークレットキー … `wrangler secret put TURNSTILE_SECRET`
+
+ウィジェットは https://dash.cloudflare.com/?to=/:account/turnstile で作成する。
+**ホスト名に `codebluetokyo-commits.github.io` を登録すること。** 未登録だと
+トークンが hostname 検証で弾かれる。
+
+検証は入力検証の後、Jev 呼び出しの前に行う。弾いたリクエストで Jev は呼ばれない。
+
+| 状況 | 挙動 |
+|---|---|
+| トークンなし | 403「認証が完了していません」 |
+| 不正・期限切れ・使用済み | 403「認証の有効期限が切れました」 |
+| Turnstile に到達できない | **通す**（ログに記録） |
+| `TURNSTILE_SECRET` 未設定 | 検証をスキップ（警告ログ） |
+
+Turnstile 到達不能時に通すのは、Cloudflare 側の障害で正規の問い合わせを失う方が
+損害が大きいため。
+
+トークンは発行から 300 秒で失効し、一度しか使えない。送信のたびに
+`turnstile.reset()` でウィジェットを作り直している。
+
+### テストキー
+
+実キーなしで全経路を検証できる（`docs: turnstile/troubleshooting/testing`）。
+
+| キー | 挙動 |
+|---|---|
+| サイト `1x00000000000000000000AA` | 常に合格 |
+| サイト `2x00000000000000000000AB` | 常に不合格 |
+| シークレット `1x0000000000000000000000000000000AA` | 常に合格 |
+| シークレット `2x0000000000000000000000000000000AA` | 常に不合格 |
+| シークレット `3x0000000000000000000000000000000AA` | 使用済みトークン扱い |

@@ -13,6 +13,7 @@
  */
 import { classify, decidePriority } from './triage.js';
 import { buildPlainText, buildWebhookPayload } from './notify.js';
+import { verifyTurnstile } from './turnstile.js';
 
 const DEFAULT_ORIGINS = ['https://codebluetokyo-commits.github.io'];
 
@@ -85,6 +86,8 @@ function validate(body) {
   const message = String(body?.message ?? '').trim();
   const honeypot = String(body?.website ?? '').trim();
 
+  const turnstileToken = String(body?.turnstileToken ?? '').trim();
+
   if (honeypot) return { error: null, spamTrap: true };
   if (!message) return { error: 'お問い合わせ内容を入力してください。' };
   if (message.length < LIMITS.messageMin) return { error: 'お問い合わせ内容が短すぎます。' };
@@ -95,7 +98,7 @@ function validate(body) {
   }
   if (name.length > LIMITS.name) return { error: `お名前は${LIMITS.name}文字以内で入力してください。` };
 
-  return { error: null, data: { name: name || '(未記入)', email, message } };
+  return { error: null, data: { name: name || '(未記入)', email, message }, turnstileToken };
 }
 
 async function notify(data, verdict, receivedAt, env, ctx) {
@@ -182,10 +185,28 @@ export default {
       return json({ ok: false, error: '送信データを読み取れませんでした。' }, 400, cors);
     }
 
-    const { error, data, spamTrap } = validate(body);
+    const { error, data, spamTrap, turnstileToken } = validate(body);
     if (error) return json({ ok: false, error }, 400, cors);
     // ボットには成功を返して静かに捨てる
     if (spamTrap) return json({ ok: true }, 200, cors);
+
+    // bot をここで止める。Jev を呼ぶ前なので、弾いたリクエストのコストは発生しない。
+    if (env.TURNSTILE_SECRET) {
+      const ip = request.headers.get('CF-Connecting-IP') || undefined;
+      const v = await verifyTurnstile(turnstileToken, env.TURNSTILE_SECRET, ip);
+      if (!v.ok) {
+        if (v.unreachable) {
+          // Turnstile に到達できないのは Cloudflare 側の問題。
+          // ここで弾くと正規の問い合わせまで失うので、通したうえで通知に印を付ける。
+          console.error('[contact] Turnstile に到達できず、検証を省略しました');
+        } else {
+          console.warn(`[contact] Turnstile 検証に失敗: ${v.codes.join(',')}`);
+          return json({ ok: false, error: v.error }, 403, cors);
+        }
+      }
+    } else {
+      console.warn('[contact] TURNSTILE_SECRET が未設定のため bot 検証を行っていません');
+    }
 
     if (!env.TYPESAFE_API_KEY) {
       console.error('TYPESAFE_API_KEY が未設定です');
