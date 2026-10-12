@@ -6,7 +6,7 @@ compatibility_date = "2025-09-01"
 enabled = true
 
 [vars]
-ALLOWED_ORIGINS = "https://codebluetokyo-commits.github.io"
+ALLOWED_ORIGINS = "https://codebluetokyo-commits.github.io,https://buddyai.kenkonworks.jp"
 
 # --- レート制限 ---
 # workers.dev のURLは自分のゾーンではないため、ダッシュボードの WAF / Rate Limiting Rules は使えない。
