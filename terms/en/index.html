@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms of Service | Buddy AI Navigator</title>
+<meta name="description" content="Terms of Service for Buddy AI, an AI personal assistant app.">
+<style>
+  :root{
+    --ink:#1F2430;
+    --ink-soft:#4A5160;
+    --meta:#6B7280;
+    --gold:#C9A961;
+    --gold-deep:#96742A;
+    --navy:#0B1120;
+    --cream:#F3EEE1;
+    --rule:#E4E2DC;
+    --maxw:760px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:#fff;
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+    font-size:17px;
+    line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- header ---------- */
+  header{
+    background:var(--navy);
+    padding:64px 24px 60px;
+    text-align:center;
+  }
+  h1{
+    margin:0;
+    color:var(--gold);
+    font-size:clamp(30px,6vw,44px);
+    font-weight:500;
+    letter-spacing:.04em;
+    line-height:1.25;
+  }
+  .kicker{
+    margin:16px 0 0;
+    color:#B9BFCB;
+    font-size:13px;
+    font-weight:400;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+  }
+
+  /* ---------- language switch ---------- */
+  .lang{
+    display:flex;
+    gap:10px;
+    justify-content:flex-start;
+    margin:0 0 40px;
+  }
+  .lang a{
+    display:inline-block;
+    padding:8px 22px;
+    border-radius:999px;
+    border:1px solid var(--navy);
+    font-size:14px;
+    font-weight:600;
+    letter-spacing:.02em;
+    text-decoration:none;
+    color:var(--navy);
+    transition:background .15s ease,color .15s ease;
+  }
+  .lang a[aria-current="true"]{
+    background:var(--navy);
+    color:#fff;
+  }
+  .lang a:not([aria-current="true"]):hover{
+    background:#F1F2F5;
+  }
+  .lang a:focus-visible{
+    outline:2px solid var(--gold-deep);
+    outline-offset:3px;
+  }
+
+  /* ---------- layout ---------- */
+  main{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:48px 24px 96px;
+  }
+  .meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px 32px;
+    color:var(--meta);
+    font-size:14px;
+    letter-spacing:.01em;
+  }
+  hr{
+    border:0;
+    border-top:1px solid var(--rule);
+    margin:24px 0 40px;
+  }
+
+  .callout{
+    background:var(--cream);
+    border-left:4px solid var(--gold);
+    padding:22px 26px;
+    margin:0 0 56px;
+    font-size:16px;
+    line-height:1.9;
+  }
+  .callout p{margin:0}
+
+  h2{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    margin:56px 0 20px;
+    font-size:20px;
+    font-weight:700;
+    line-height:1.5;
+    letter-spacing:.01em;
+  }
+  h2::before{
+    content:"";
+    flex:0 0 auto;
+    width:4px;
+    align-self:stretch;
+    background:var(--gold);
+    border-radius:2px;
+  }
+  h3{
+    margin:36px 0 14px;
+    font-size:17px;
+    font-weight:700;
+    color:var(--ink);
+    letter-spacing:.01em;
+  }
+
+  p{margin:0 0 18px}
+  ul,ol{margin:0 0 20px;padding-left:1.4em}
+  li{margin:0 0 10px}
+  li::marker{color:var(--gold-deep)}
+
+  strong{font-weight:700}
+
+  a{color:var(--gold-deep);text-underline-offset:3px}
+  a:focus-visible{outline:2px solid var(--gold-deep);outline-offset:2px}
+
+  .note{color:var(--ink-soft);font-size:16px}
+
+  .contact{
+    margin-top:12px;
+    line-height:2;
+  }
+  .contact span{
+    display:inline-block;
+    min-width:88px;
+    color:var(--meta);
+    font-size:14px;
+    letter-spacing:.02em;
+  }
+
+  footer{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:32px 24px 72px;
+    border-top:1px solid var(--rule);
+    color:var(--meta);
+    font-size:13px;
+    letter-spacing:.03em;
+    text-align:center;
+  }
+  footer span{white-space:nowrap;margin:0 10px}
+
+  @media (max-width:520px){
+    body{font-size:16px}
+    header{padding:48px 20px 44px}
+    main{padding:36px 20px 72px}
+    .meta{gap:4px 20px;font-size:13px}
+  }
+
+  @media print{
+    header{background:#fff;padding:0 0 24px}
+    h1{color:#000}
+    .kicker{color:#444}
+    .lang{display:none}
+    a{color:#000}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Terms of Service</h1>
+  <p class="kicker">Terms of Service — Buddy AI Navigator</p>
+</header>
+
+<main>
+
+  <nav class="lang" aria-label="Language">
+    <a href="../">日本語</a>
+    <a href="./" aria-current="true">English</a>
+  </nav>
+
+  <div class="meta">
+    <span>Effective: July 3, 2026</span>
+    <span>Last revised: October 27, 2026</span>
+    <span>Version: v1.4</span>
+  </div>
+
+  <hr>
+
+  <div class="callout">
+    <p>These Terms set out the conditions for using the AI personal assistant app “Buddy AI Navigator” (“Buddy AI” for short; formerly Knowledge Navigator) (the “Service”). By using the Service, you are deemed to have agreed to these Terms.</p>
+  </div>
+
+  <h2>Article 1 — General Provisions and Scope</h2>
+  <ol>
+    <li>These Terms set out the conditions governing use of the AI personal assistant application “Buddy AI Navigator” (the “Service”), provided by Kenkon, represented by Nobuhiro Kawachi (“we,” “us,” or “our”).</li>
+    <li>By using the Service, you are deemed to have agreed to all provisions of these Terms.</li>
+    <li>If you do not agree to these Terms, you may not use the Service.</li>
+    <li>We may revise these Terms as necessary. Revised Terms will be published on this page. For material changes, we will give notice within the app or in the App Store update notes.</li>
+  </ol>
+
+  <h2>Article 2 — Description of the Service</h2>
+  <p>The Service provides the following features:</p>
+  <ul>
+    <li>Voice and text conversation with AI characters</li>
+    <li>AI support for task management</li>
+    <li>Analysis of photos and documents, and translation</li>
+    <li>Research and summarized findings, including recommendations of shops and places with links to map apps</li>
+    <li>Calendar and Reminders integration (only with your permission)</li>
+    <li>Meeting minutes created from recordings</li>
+    <li>Checking messages you receive for signs of fraud</li>
+    <li>Remembering things from your conversations to use in later ones (“Conversation Memory”)</li>
+    <li>Scanning documents and business cards, and opening a contact screen filled in from a business card</li>
+    <li>Drafting item names, estimated prices, descriptions, and other details for listing items on flea-market and auction services (“Listing Helper”)</li>
+    <li>Looking up when bookings or ticket sales open, and notifying you at that time (“Booking Reminders”)</li>
+  </ul>
+  <p>We may improve, add to, change, or discontinue the Service. However, where a change would be significantly disadvantageous to paid plan users, we will give advance notice.</p>
+
+  <h2>Article 3 — Eligibility</h2>
+  <ol>
+    <li>The Service is not available to persons under 13 years of age.</li>
+    <li>Persons aged 13 or older but under 18 must obtain the consent of a parent or guardian before use.</li>
+    <li>If misuse is discovered, we may restrict or suspend use of the Service without prior notice.</li>
+  </ol>
+
+  <h2>Article 4 — Special Provisions for AI Features</h2>
+
+  <h3>4-1. Nature of AI-generated content</h3>
+  <p>Suggestions, answers, and summaries generated by the AI characters in the Service (“AI Output”) are provided as reference information only. Please note the following:</p>
+  <ul>
+    <li>AI Output may contain errors, and we do not guarantee its accuracy, completeness, or timeliness</li>
+    <li>AI Output is not a substitute for your own final decisions</li>
+    <li>For matters requiring medical, legal, financial, or other professional judgment, always consult a qualified professional</li>
+  </ul>
+  <p>Our liability for damages arising from the use of AI Output is limited to the extent set out in Article 9.</p>
+
+  <h3>4-2. Use of third-party AI services</h3>
+  <p>The Service uses the Claude API provided by Anthropic, PBC. To find clues about items and text in photos, the Service may also send images to the Cloud Vision API provided by Google LLC.</p>
+  <ul>
+    <li>To provide the Service’s personalization features, profile information you enter (including your name), conversation content, Conversation Memory, and images you send are transmitted to the Claude API</li>
+    <li>The Service does not require account registration and does not collect email addresses or phone numbers within the app, so such information is never transmitted to the Claude API</li>
+    <li>Anthropic’s usage policies (<a href="https://www.anthropic.com/legal/aup">https://www.anthropic.com/legal/aup</a>) apply</li>
+  </ul>
+  <p class="note">If you prefer not to use personalization, you may leave the profile fields blank, or use “Reset profile” on the settings screen.</p>
+
+  <h3>4-3. Emergencies</h3>
+  <p>The Service is not a substitute for emergency calls, medical care, ambulance services, or safety checks. In an emergency such as sudden illness, injury, an accident, or a disaster, contact the public emergency services directly (in Japan, 119 or 110).</p>
+
+  <h3>4-4. Information about shops, facilities, and other third parties</h3>
+  <p>Information the Service provides about shops and facilities (opening days and hours, location, prices, whether they are open or closed, and so on) is based on information found on the web and may be out of date. Please confirm directly with the shop or facility before visiting. We do not receive advertising fees or referral fees from any shop or facility the Service recommends.</p>
+
+  <h3>4-5. Fraud check</h3>
+  <p>The fraud check result is a guide to prompt caution. A result of “safe” does not guarantee that a message is not fraudulent. If you are asked to transfer money or enter personal information, or have any doubt, consult your family, the police consultation line (#9110 in Japan), or the Consumer Hotline (188 in Japan).</p>
+
+  <h3>4-6. Recording and meeting minutes</h3>
+  <p>If you record other people speaking, for example in a meeting, obtain their consent in advance. If your workplace restricts recording or the use of external services, follow those rules.</p>
+
+  <h3>4-7. Listing Helper and Booking Reminders</h3>
+  <ul>
+    <li>Prices and item conditions shown by the Listing Helper, and dates and times shown for Booking Reminders, are estimates based on information found on the web. Before listing or applying, always check the actual item and the official information.</li>
+    <li>The Service is not affiliated with Mercari, Yahoo! Auctions, eBay, ticketing websites, or any other external service. You list, buy, book, or apply yourself, in accordance with each service’s terms. The Service never logs in to, lists on, or books through any external service on your behalf.</li>
+    <li>Reminders use your device’s notifications. Depending on your device settings, power, or network conditions, a reminder may be delayed or not delivered. We are not responsible for any missed booking or sale caused by a reminder not arriving.</li>
+  </ul>
+
+  <h2>Article 5 — Personal Information and Data</h2>
+  <p>For details on how personal information is handled, please see our separate <a href="https://buddyai.kenkonworks.jp/privacy/">Privacy Policy</a>. Conversation history and profile information are stored on your device. Conversation Memory is stored in a database located in Singapore.</p>
+
+  <h2>Article 6 — Pricing Plans</h2>
+  <p>The Service offers the following plans:</p>
+  <ul>
+    <li><strong>Free plan</strong> — Basic features at no charge. A daily usage limit applies.</li>
+    <li><strong>Buddy AI Premium (paid plan)</strong> — No usage limit, access to all characters, and retention of conversation memory.</li>
+  </ul>
+
+  <h3>6-1. Price and free trial</h3>
+  <ul>
+    <li>¥980 per month (Japan). Prices in other countries and regions follow the App Store listing.</li>
+    <li>First-time subscribers receive a one-month free trial.</li>
+    <li>The free trial applies only once per subscription group.</li>
+  </ul>
+
+  <h3>6-2. Payment, renewal, and cancellation</h3>
+  <ul>
+    <li>Payment is processed through the App Store and charged to your Apple ID account upon confirmation of purchase</li>
+    <li>The subscription renews automatically unless it is cancelled at least 24 hours before the end of the current period</li>
+    <li>The renewal charge is applied within the 24 hours before the end of the current period</li>
+    <li>You can cancel from iOS Settings → Apple ID → Subscriptions</li>
+    <li>No charge is incurred if you cancel during the free trial period</li>
+    <li>Refunds follow the App Store refund policy. We cannot issue refunds directly.</li>
+  </ul>
+
+  <h2>Article 7 — Prohibited Conduct</h2>
+  <p>You may not:</p>
+  <ol>
+    <li>Reverse engineer, decompile, or disassemble the Service</li>
+    <li>Use the Service for illegal purposes, or for acts contrary to public order and morals</li>
+    <li>Infringe the intellectual property rights, privacy rights, or reputation of us or any third party</li>
+    <li>Gain unauthorized access to the Service, or place an excessive load on our servers</li>
+    <li>Reinstall the app, or take any other action, for the purpose of circumventing usage limits</li>
+    <li>Use the AI agents for spam, phishing, or fraud</li>
+    <li>Enter information about a third party without that third party’s consent</li>
+  </ol>
+
+  <h2>Article 8 — Intellectual Property</h2>
+  <p>All intellectual property rights relating to the Service — including software, design, trademarks, logos, and characters — belong to us. These Terms do not transfer or license any intellectual property rights to you, except to the extent necessary to use the Service.</p>
+
+  <h2>Article 9 — Disclaimer</h2>
+  <ol>
+    <li>The Service is provided AS-IS. We do not guarantee that the Service will be continuous, uninterrupted, or error-free.</li>
+    <li>If you suffer damage for which we are responsible, we are liable only for direct and ordinary damages. Where we are only slightly negligent, our liability is limited to the total fees you paid for the Service in the 12 months up to and including the month in which the damage occurred.</li>
+    <li>The limitation in the preceding paragraph does not apply in cases of our willful misconduct or gross negligence.</li>
+  </ol>
+
+  <h2>Article 10 — Suspension and Termination of the Service</h2>
+  <p>We may suspend the Service due to system maintenance, force majeure, or failures in third-party services such as the Claude API, databases, or servers.</p>
+
+  <h2>Article 11 — Governing Law and Jurisdiction</h2>
+  <p>These Terms are governed by the laws of Japan. The Tokyo District Court shall have exclusive jurisdiction as the court of first instance for any dispute relating to these Terms.</p>
+
+  <h2>Article 12 — Contact</h2>
+  <div class="contact">
+    <div><span>Operator</span>Kenkon (Representative: Nobuhiro Kawachi)</div>
+    <div><span>Address</span>Aoyama Marutake Bldg. 6F, 3-1-36 Minami-Aoyama, Minato-ku, Tokyo 107-0062, Japan</div>
+    <div><span>Email</span><a href="mailto:info@kenkonworks.jp">info@kenkonworks.jp</a></div>
+  </div>
+
+</main>
+
+<footer>
+  <span>Effective July 3, 2026</span>
+  <span>Last revised October 27, 2026</span>
+  <span>Buddy AI Navigator</span>
+</footer>
+
+</body>
+</html>
